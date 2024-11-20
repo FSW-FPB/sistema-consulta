@@ -40,10 +40,22 @@ def is_similar(a, b, threshold=80):
 @app.route('/cid', methods=['GET'])
 def fetch_all_cids():
     """
-    Endpoint to retrieve all available CIDs.
+    Endpoint to retrieve all available CIDs with pagination.
     :return: JSON containing a list of CIDs and their descriptions.
     """
-    return jsonify(db_list), 200
+    # Pega os parâmetros de paginação (page e page_size)
+    page = int(request.args.get('page', 1))  # Página inicial padrão é 1
+    page_size = int(request.args.get('page_size', 500))  # Tamanho da página padrão é 500
+
+    # Calcula os índices de início e fim para a paginação
+    start_index = (page - 1) * page_size
+    end_index = start_index + page_size
+
+    # Obtém o segmento dos dados baseado na paginação
+    paginated_data = db_list[start_index:end_index]
+
+    # Retorna os dados paginados
+    return jsonify(paginated_data), 200
 
 
 @app.route('/cid/<string:code>', methods=['GET'])
