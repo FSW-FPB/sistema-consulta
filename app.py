@@ -1,12 +1,14 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import json
 from typing import List, Dict
 from thefuzz import fuzz
 import re
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # Set env Variables
 load_dotenv()
