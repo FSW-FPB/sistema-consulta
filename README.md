@@ -8,6 +8,7 @@ Esta API fornece endpoints para consulta e busca de códigos CID e suas respecti
 - **python-dotenv**: Gerenciamento de variáveis de ambiente
 - **thefuzz**: Biblioteca para comparação aproximada de 2 strings.
 - **JSON**: Armazenamento dos dados CID.
+- **Flask-CORS**: Gerenciamento de CORS para permitir requisições de diferentes origens.
 
 ## Configuração Inicial
 
@@ -95,6 +96,41 @@ http://localhost:5000/cid/search/tuberculose?search_mode=regular
 - O modo de busca flexível utiliza um threshold (limite de filtro) por padrão de 80% para filtrar por buscas melhores, mas se precisar pode diminuir o threshold para um alcance de buscas maiores com o risco de falsos positivos.
 - A busca por código é case-insensitive (não diferencia maiúsculas/minúsculas)
 - O modo de busca regular permite encontrar termos exatos na ordem especificada.
+---
+
+# Changelog
+## Atualizações Recentes
+
+### Versão 1.1.0 (03/12/2024)
+#### `GET /cid`
+- **Descrição**: Nova funcionalidade implementada de paginação no endpoint para facilitar o consumo de grandes volumes de dados.
+- **Parâmetros Novos (opcionais)**:
+  - `page`: Define a página a ser recuperada (Default: "1")
+  - `page_size`: Define o número de itens por página (Default: "500")
+- **Nova resposta:**:
+  - Agora os dados retornandos são segmentados de acordo com os parâmetros de paginação fornecidos.
+  - A resposta será um subconjunto da lista completa de CIDs, determinado pelos índices calculados com base na página atual e no tamanho especificado em formato JSON.
+- **Exemplo de paginação**:
+### Recuperar todos os CIDs
+```bash
+# Primeira página (padrão)
+ http://localhost:5000/cid
+
+# Especificando página e tamanho
+http://localhost:5000/cid?page=2&page_size=100
+```
+
+#### Problemas Resolvidos
+- **CORS**: Resolvido o problema de restrição de CORS, garantindo compatibilidade com requisições de diferentes origens.
+
+---
+
+### Versão 1.0.0 (Lançamento Inicial)
+- Criação dos endpoints:
+  - `GET /cid`: Listar todos os CIDs.
+  - `GET /cid/<code>`: Buscar CID por código.
+  - `GET /cid/search/<search_term>`: Buscar CID por nome/descrição com modos de busca `flexible` e `regular`.
+
 ---
 
 Este README cobre as principais funcionalidades e exemplos de uso para a API.
